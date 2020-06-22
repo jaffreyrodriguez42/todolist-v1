@@ -5,22 +5,29 @@
   <title>To Do List</title>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link href="css/style.css" rel="stylesheet" />
+  <link href="css/styles.css" rel="stylesheet" />
 </head>
 
 <body>
-  <h1><%= kindOfDay %></h1>
+  <div class="box" id="heading">
+    <h1><%= kindOfDay %></h1>
+  </div>
 
-  <ul>
+  <div class="box">
     <% works.forEach(function(item){ %>
-    <li><%= item %></li>
+    <div class="item">
+      <input type="checkbox">
+      <p><%= item %></p>
+    </div>
     <% }) %>
-  </ul>
 
-  <form action="/" method="POST">
-    <input type="text" name="work" />
-    <button>Add Work</button>
-  </form>
+    <form class="item" action="/" method="POST">
+      <input type="text" name="work" placeholder="New Item" autocomplete="off" />
+      <button>+</button>
+    </form>
+  </div>
+
+
 </body>
 
 </html>

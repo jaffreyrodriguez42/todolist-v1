@@ -6,6 +6,7 @@ const app = express();
 let works = [];
 
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static("public")); // so that we can target the styles.css file
 
 app.set("view engine", "ejs"); //ejs - Embedded JavaScript Templating
 
