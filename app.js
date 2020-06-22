@@ -2,28 +2,29 @@ const express = require("express");
 const bodyParser = require("body-parser");
 
 const app = express();
-var works = [];
+// use let instead of var
+let works = [];
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.set("view engine", "ejs"); //ejs - Embedded JavaScript Templating
 
 app.get("/", function (req, res) {
-  var today = new Date();
+  let today = new Date();
 
-  var options = {
+  let options = {
     weekday: "long",
     day: "numeric",
     month: "long",
   };
 
-  var day = today.toLocaleDateString("en-US", options);
+  let day = today.toLocaleDateString("en-US", options);
 
   res.render("list", { kindOfDay: day, works: works });
 });
 
 app.post("/", function (req, res) {
-  var work = req.body.work;
+  let work = req.body.work;
   works.push(work);
   res.redirect("/");
   // console.log(work);
