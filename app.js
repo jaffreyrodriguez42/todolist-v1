@@ -3,20 +3,39 @@ const bodyParser = require("body-parser");
 
 const app = express();
 
+app.set("view engine", "ejs"); //ejs - Embedded JavaScript Templating
+
 app.get("/", function (req, res) {
   var today = new Date();
   var currentDay = today.getDay();
+  var day = "";
 
-  if (currentDay === 6 || currentDay === 0) {
-    // res.send("<h1>Yay it's the weekend!</h1>");
-    res.write("<h1>Yay it's the weekend!</h1>");
-  } else {
-    res.sendFile(__dirname + "/index.html");
-    // res.write("<p>It is not the weekend!</p>");
-    // res.write("<h1>Boo! I have to work</h1>");
-    // res.send("<h1>Boo! I have to work</h1>");
-    // res.send();
+  switch (currentDay) {
+    case 0:
+      day = "Sunday";
+      break;
+    case 1:
+      day = "Monday";
+      break;
+    case 1:
+      day = "Tuesday";
+      break;
+    case 1:
+      day = "Wednesday";
+      break;
+    case 1:
+      day = "Thursday";
+      break;
+    case 1:
+      day = "Friday";
+      break;
+    case 1:
+      day = "Saturday";
+      break;
+    default:
+      console.log("Error: current day is equal to: " + currentDay);
   }
+  res.render("list", { kindOfDay: day });
 });
 
 app.listen(3000, function () {
