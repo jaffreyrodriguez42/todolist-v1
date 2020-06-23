@@ -1,33 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
+<%- include("header") -%>
 
-<head>
-  <title>To Do List</title>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link href="css/styles.css" rel="stylesheet" />
-</head>
+<div class="box" id="heading">
+  <!-- receive the data from the app.js file // date format // day, month, date // Tuesday, June 23  -->
+  <h1><%= listTitle %></h1>
+</div>
 
-<body>
-  <div class="box" id="heading">
-    <h1><%= kindOfDay %></h1>
+<!-- receive the works array, spread the items in array using forEach JS method -->
+<div class="box">
+  <% works.forEach(function(item){ %>
+  <div class="item">
+    <input type="checkbox">
+    <p><%= item %></p>
   </div>
-
-  <div class="box">
-    <% works.forEach(function(item){ %>
-    <div class="item">
-      <input type="checkbox">
-      <p><%= item %></p>
-    </div>
-    <% }) %>
-
-    <form class="item" action="/" method="POST">
-      <input type="text" name="work" placeholder="New Item" autocomplete="off" />
-      <button>+</button>
-    </form>
-  </div>
+  <% }) %>
 
 
-</body>
+  <form class="item" action="/" method="POST">
+    <input type="text" name="work" placeholder="New Item" autocomplete="off" />
+    <!-- value of button is the listTitle value // either "Day" or "Work" -->
+    <button type="submit" name="list" value=<%= listTitle %>>+</button>
+  </form>
+</div>
 
-</html>
+<%- include("footer") -%>
