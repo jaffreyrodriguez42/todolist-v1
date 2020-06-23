@@ -1,11 +1,13 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const date = require(__dirname + "/date.js");
+
 
 const app = express();
 // use let instead of var // let is local scope if inside curly brackets // var is only local inside function 
 // var is global inside any other curly brackets
-let works = [];
-let workItems = [];
+const works = [];
+const workItems = [];
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public")); // so that we can target the styles.css file
@@ -13,21 +15,13 @@ app.use(express.static("public")); // so that we can target the styles.css file
 app.set("view engine", "ejs"); //ejs - Embedded JavaScript Templating
 
 app.get("/", function (req, res) { //get request to the Home route
-  let today = new Date();
-
-  let options = {
-    weekday: "long",
-    day: "numeric",
-    month: "long",
-  };
-
-  let day = today.toLocaleDateString("en-US", options); // returns = Day, Month Date format / Tuesday, June 23
+  const day = date.getDate();
 
   res.render("list", { listTitle: day, works: works });// renders to list.ejs page, with the data listTitle: day and works: works
 });
 
 app.post("/", function (req, res) { //post request to the Home route
-  let work = req.body.work; // data comes from the input type text with name work in list.ejs file
+  const work = req.body.work; // data comes from the input type text with name work in list.ejs file
   if (req.body.list === "Work") { // value of the button with name list in the list.ejs file
     workItems.push(work); // push "work" to the workItems array, if button value is "Work"
     res.redirect("/work"); // redirect to "/work" through GET request
