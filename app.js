@@ -57,15 +57,12 @@ app.get("/", function (req, res) { //get request to the Home route
 });
 
 app.post("/", function (req, res) { //post request to the Home route
-  const work = req.body.work; // data comes from the input type text with name work in list.ejs file
-  if (req.body.list === "Work") { // value of the button with name list in the list.ejs file
-    workItems.push(work); // push "work" to the workItems array, if button value is "Work"
-    res.redirect("/work"); // redirect to "/work" through GET request
-  } else { // if the value of button is day of the week, ex "Monday"
-    works.push(work); // push "work" to the works array, if button value is the day of the week ex, "Monday"
-    res.redirect("/"); // redirect to Home route through GET request
-  }
-
+  const itemName = req.body.work; // data comes from the input type text with name work in list.ejs file
+  const item = new Item({
+    name: itemName
+  });
+  item.save();
+  res.redirect("/");
 });
 
 app.get("/work", function (req, res) { // get request to the "/work" route
