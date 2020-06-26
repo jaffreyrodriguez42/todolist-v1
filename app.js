@@ -65,6 +65,21 @@ app.post("/", function (req, res) { //post request to the Home route
   res.redirect("/");
 });
 
+app.post("/delete", function (req, res) {
+  const checkedItemId = req.body.checkBox;
+  console.log(checkedItemId);
+  Item.findByIdAndRemove(checkedItemId, function (err) {
+    if (!err) {
+      console.log("Deleted!");
+    } else {
+      console.log(err);
+    }
+    res.redirect("/");
+
+  });
+
+});
+
 app.get("/work", function (req, res) { // get request to the "/work" route
   //renders to list.ejs page with the data listTitle: "Work List" and the worksItems array  
   res.render("list", { listTitle: "Work List", works: workItems });
