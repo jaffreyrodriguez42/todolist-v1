@@ -12,11 +12,18 @@ app.use(express.static("public")); // so that we can target the styles.css file
 
 mongoose.connect("mongodb://localhost:27017/todolistDB", { useNewUrlParser: true });
 
-const itemsSchema = ({
+const itemSchema = ({
   name: String
 });
 
-const Item = mongoose.model("Item", itemsSchema);
+const listSchema = ({
+  name: String,
+  items: [itemSchema]
+});
+
+const Item = mongoose.model("Item", itemSchema);
+
+const List = mongoose.model("List", listSchema);
 
 const item1 = new Item({
   name: "Sleepsf times"
@@ -80,10 +87,35 @@ app.post("/delete", function (req, res) {
 
 });
 
-app.get("/work", function (req, res) { // get request to the "/work" route
-  //renders to list.ejs page with the data listTitle: "Work List" and the worksItems array  
-  res.render("list", { listTitle: "Work List", works: workItems });
-});
+// app.get("/work", function (req, res) { // get request to the "/work" route
+//   //renders to list.ejs page with the data listTitle: "Work List" and the worksItems array  
+//   res.render("list", { listTitle: "Work List", works: workItems });
+// });
+
+app.get("/:customListName", function (req, res) {
+  const customListName = req.params.customListName;
+  List.findOne({ name: customListName }, function (err, foundList) {
+    if (!err) {
+      if (!foundList) {
+        //create a new list
+        const list = new List({
+          name: customListName,
+          items: defaultItems
+        });
+        list.save();
+        res.redirect("/" + customListName);
+      } else {
+        //show an existing list
+        res.render("list", { listTitle: foundList.name, works: foundList.items });
+      }
+    }
+
+  });
+
+
+  // res.render("list", { listTitle: page.toUpperCase(), works: [] });
+})
+
 
 app.get("/about", function (req, res) {
 
