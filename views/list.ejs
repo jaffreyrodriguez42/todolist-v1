@@ -10,7 +10,7 @@
   <% works.forEach(function(item){ %>
   <div class="item">
     <input type="checkbox">
-    <p><%= item %></p>
+    <p><%= item.name %></p>
   </div>
   <% }) %>
 
@@ -20,6 +20,7 @@
     <!-- value of button is the listTitle value // either "Day" or "Work" -->
     <button type="submit" name="list" value=<%= listTitle %>>+</button>
   </form>
+
 </div>
 
 <%- include("footer") -%>

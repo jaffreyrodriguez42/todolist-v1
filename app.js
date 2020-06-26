@@ -1,23 +1,59 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const date = require(__dirname + "/date.js");
+const mongoose = require("mongoose");
 
 
 const app = express();
 // use let instead of var // let is local scope if inside curly brackets // var is only local inside function 
 // var is global inside any other curly brackets
-const works = [];
-const workItems = [];
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public")); // so that we can target the styles.css file
 
+mongoose.connect("mongodb://localhost:27017/todolistDB", { useNewUrlParser: true });
+
+const itemsSchema = ({
+  name: String
+});
+
+const Item = mongoose.model("Item", itemsSchema);
+
+const item1 = new Item({
+  name: "Sleepsf times"
+});
+
+const item2 = new Item({
+  name: "Eat Dinners"
+});
+
+const item3 = new Item({
+  name: "Plays Basketball"
+});
+
+const defaultItems = [item1, item2, item3];
+
+// Item.deleteMany({}, function (err) {
+//   mongoose.connection.close();
+// });
+
+
 app.set("view engine", "ejs"); //ejs - Embedded JavaScript Templating
 
 app.get("/", function (req, res) { //get request to the Home route
-  const day = date.getDate();
-
-  res.render("list", { listTitle: day, works: works });// renders to list.ejs page, with the data listTitle: day and works: works
+  Item.find({}, function (err, items) {
+    if (items.length === 0) {
+      Item.insertMany(defaultItems, function (err) {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log("Successfully inserted many");
+        }
+      });
+      res.redirect("/"); // we redirect to the home route after the items are added to the database/ since length now of the items array will not be zero, it will display now the items
+    } else {
+      res.render("list", { listTitle: "Today", works: items });
+    }
+  });
 });
 
 app.post("/", function (req, res) { //post request to the Home route
@@ -38,7 +74,8 @@ app.get("/work", function (req, res) { // get request to the "/work" route
 });
 
 app.get("/about", function (req, res) {
-  res.render("about");
+
+  res.render("list", { listTitle: "Today", works: items });
 })
 
 app.listen(3000, function () {
