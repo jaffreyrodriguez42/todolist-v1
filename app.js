@@ -65,11 +65,23 @@ app.get("/", function (req, res) { //get request to the Home route
 
 app.post("/", function (req, res) { //post request to the Home route
   const itemName = req.body.work; // data comes from the input type text with name work in list.ejs file
+  const listName = req.body.list; // the value on the button that is in the list.ejs
+
   const item = new Item({
     name: itemName
   });
-  item.save();
-  res.redirect("/");
+
+  if (listName === "Today") {
+    item.save();
+    res.redirect("/");
+  } else {
+    List.findOne({ name: listName }, function (err, foundList) {
+      foundList.items.push(item);
+      foundList.save();
+      res.redirect("/" + listName);
+    });
+  }
+
 });
 
 app.post("/delete", function (req, res) {
