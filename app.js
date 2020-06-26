@@ -11,7 +11,7 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public")); // so that we can target the styles.css file
 
-mongoose.connect("mongodb://localhost:27017/todolistDB", { useNewUrlParser: true });
+mongoose.connect("mongodb+srv://admin-jaf:adminjaf@cluster0-ngxtc.mongodb.net/todolistDB", { useNewUrlParser: true });
 
 const itemSchema = ({
   name: String
